@@ -1,0 +1,65 @@
+%Funciones de Transferencia.
+Hum = tf([0.000031666],[78.61 1]);
+Pla = tf([0.000014458],[230 1]);
+
+%Funcion de Transferencia Lazo abierto.
+FTLA = Hum*Pla
+
+%FTLA con ceros y polos.
+zpk(FTLA)
+
+%Polos y grafica de los polos de FTLA
+polosLA = pole(FTLA)
+pzmap(FTLA)
+title('Polos de la funcion a lazo abierto')
+
+%Funcion de Transferencia Lazo cerrado
+FTLC = (FTLA)/(1+FTLA)
+
+%FTLC con ceros y polos
+zpk(FTLC) 
+
+%Polos, ceros y grafica de los polos y ceros de FTLC
+polosLC = pole(FTLC)
+zerosLC = zero(FTLC)
+pzmap(FTLC)
+title('Polos de la funcion a lazo cerrado')
+
+%Grafico respuesta temporal
+step(FTLC); stepinfo(FTLC)
+
+
+%Determinar la Función de transferencia de los sistemas cuyas respuestas al escalónunitario se muestran.(Subamortiguado)
+
+yss=4.57e-10;       % Valor de estado estable 
+ts=1400;            % [seg] tiempo de establecimiento
+td=0;               % [seg] tiempo de retardo
+Tfinal=1800;        % [seg] duración de la simulación
+s=tf('s');
+K=yss;
+Tau=ts/5;
+G=K/(Tau/2*s+1)^2
+G.inputdelay=td;
+step(G,Tfinal);grid
+
+%Polos, ceros y grafica de los polos y ceros de FTLC
+polosG = pole(G)
+zpk(G) 
+pzmap(G)
+
+
+%Calculo de error en estado estable.
+%ESCALON
+kp=evalfr(G,0)
+errorEscalon=1/(1+kp)
+
+%Lugar de raices
+rlocus(G);
+
+%implementacion del integrador y del controlador P.
+P = 3.79e6;
+FTLA2 = G*(1/s)*P;
+FTLC2 = (FTLA2)/(1+FTLA2);
+step(FTLC2)
+
+

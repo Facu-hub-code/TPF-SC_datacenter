@@ -4,8 +4,6 @@ Este repositorio contiene los códigos relacionados con el proyecto de control d
 
 ## Contenido
 
-- `codigo_control.mls`
-## Uso
-
-1. Clona este repositorio a tu máquina local:
-2. Ejecuta el codigo con el software MATLAB
+- `Informe.pdf`
+- `tpfinal.slx`
+- `tpfinal.txt`
